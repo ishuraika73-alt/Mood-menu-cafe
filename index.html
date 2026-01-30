@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mood Menu Café</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: #fdf6e3;
+      color: #333;
+    }
+    header {
+      background: #4a2c2a;
+      color: white;
+      text-align: center;
+      padding: 1.5rem;
+    }
+    .page {
+      display: none;
+      padding: 2rem;
+    }
+    .active {
+      display: block;
+    }
+.login-box {
+      max-width: 400px;
+      margin: auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    .login-box input {
+      width: 100%;
+      padding: 0.7rem;
+      margin: 0.5rem 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .login-box button {
+      width: 100%;
+      padding: 0.7rem;
+      background: #4a2c2a;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+.mood-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .mood-buttons button {
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: #d9a679;
+      color: white;
+      transition: transform 0.2s;
+    }
+    .mood-buttons button:hover {
+      transform: scale(1.1);
+      background: #b87a4a;
+    }
+    .menu-page {
+      display: flex;
+      gap: 2rem;
+    }
+.menu {
+      flex: 1;
+      background: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .songs {
+      flex: 1;
+    }
+    iframe {
+      width: 100%;
+      height: 250px;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+    }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Mood Menu Café</h1>
+    <p>Where every sip matches your mood</p>
+  </header>
+
+  <!-- Login Page -->
+  <div id="loginPage" class="page active">
+    <div class="login-box">
+      <h2>Login</h2>
+      <input type="text" id="username" placeholder="Username">
+      <input type="password" id="password" placeholder="Password">
+      <button onclick="login()">Login</button>
+    </div>
+  </div>
+
+  <!-- Mood Page -->
+  <div id="moodPage" class="page">
+    <h2>Select Your Mood</h2>
+    <div class="mood-buttons">
+      <button onclick="showMenu('angry')">😡 Angry</button>
+      <button onclick="showMenu('happy')">😊 Happy</button>
+      <button onclick="showMenu('romantic')">❤️ Romantic</button>
+      <button onclick="showMenu('relax')">😌 Relax</button>
+      <button onclick="showMenu('energetic')">⚡ Energetic</button>
+ <button onclick="showMenu('focus')">📚 Focus</button>
+    </div>
+  </div>
+
+  <!-- Menu Page -->
+  <div id="menuPage" class="page">
+    <h2 id="moodTitle"></h2>
+    <div class="menu-page">
+      <div class="menu" id="menuItems"></div>
+      <div class="songs" id="songList"></div>
+    </div>
+    <button onclick="backToMood()">⬅ Back</button>
+  </div>
+
+  <script>
+    function login() {
+      document.getElementById('loginPage').classList.remove('active');
+      document.getElementById('moodPage').classList.add('active');
+    }
+ const moodData = {
+      angry: {
+        menu: ["Spicy Chili Coffee", "Fiery Hot Wings", "Red Pepper Latte"],
+        songs: [
+          "https://www.youtube.com/embed/p9DQINKZxWE",
+          "https://www.youtube.com/embed/T8qZ-t6c49w"
+        ]
+      },
+      happy: {
+        menu: ["Rainbow Cupcake", "Sunny Lemonade", "Joyful Mocha"],
+        songs: [
+          "https://www.youtube.com/embed/Zlqf9cuaOBw",
+          "https://www.youtube.com/embed/XJAMVPQWvGY"
+        ]
+      },
+      romantic: {
+        menu: ["Rose Latte", "Chocolate Fondue", "Strawberry Smoothie"],
+        songs: [
+          "https://www.youtube.com/embed/MQoColHyGzQ",
+          "https://www.youtube.com/embed/jIqRbFQl-ds"
+        ]
+      },
+relax: {
+        menu: ["Chamomile Tea", "Mint Cooler", "Calm Cocoa"],
+        songs: [
+          "https://www.youtube.com/embed/oPS-ayK43zI",
+          "https://www.youtube.com/embed/cYOB941gyXI"
+        ]
+      },
+      energetic: {
+        menu: ["Espresso Shot", "Protein Shake", "Power Sandwich"],
+        songs: [
+          "https://www.youtube.com/embed/5qap5aO4i9A", // example lo-fi beats
+          "https://www.youtube.com/embed/DLzxrzFCyOs"
+        ]
+      },
+      focus: {
+        menu: ["Green Tea", "Brain Booster Salad", "Omega Smoothie"],
+        songs: [
+          "https://www.youtube.com/embed/jfKfPfyJRdk", // study beats
+          "https://www.youtube.com/embed/2OEL4P1Rz04"
+        ]
+      }
+    };
+
+ function showMenu(mood) {
+      document.getElementById('moodPage').classList.remove('active');
+      document.getElementById('menuPage').classList.add('active');
+      document.getElementById('moodTitle').innerText = mood.charAt(0).toUpperCase() + mood.slice(1) + " Mood Menu";
+
+      // Menu items
+      let menuHTML = "<h3>Menu</h3>";
+      moodData[mood].menu.forEach(item => {
+        menuHTML += `<p>🍴 ${item}</p>`;
+      });
+      document.getElementById('menuItems').innerHTML = menuHTML;
+
+      // Songs
+      let songHTML = "<h3>Songs</h3>";
+      moodData[mood].songs.forEach(link => {
+        songHTML += `<iframe src="${link}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+      });
+      document.getElementById('songList').innerHTML = songHTML;
+    }
+
+    function backToMood() {
+      document.getElementById('menuPage').classList.remove('active');
+      document.getElementById('moodPage').classList.add('active');
+    }
+</script>
+</body>
+</html>
